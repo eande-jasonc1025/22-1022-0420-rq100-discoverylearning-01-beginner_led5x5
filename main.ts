@@ -92,8 +92,6 @@
  * 
  * *** 'groupChannel_Digit_MAX' to 'servo_Tilt_Degrees'
  * 
- *  
- * 
  * * 2020-0120-02: Arm Servo
  * 
  * ** S-bus not work (DFRobot driver), so switch to P-bus (MakeCode driver)
@@ -108,9 +106,9 @@
  * 
  * * 2020-0224-1215
  * 
- * ** Network Test w/ Gaming Server 
+ * ** Network Test w/ Gaming Server
  * 
- * *** w/ Sonar: Simulated or Real 
+ * *** w/ Sonar: Simulated or Real
  * 
  * *** w/ BotId: Random or Real
  * 
@@ -162,21 +160,19 @@
  * 
  * * Using DFRobot Servo Pins not reliable, possibly since these are 3.3.v servos (not standard 5.0v servos), thus use MicroBit 'servo write pin Pxx' blocks for reliable 0-180 degrees.
  */
-/**
- * * Key Notes: Controller-Joystick (Network-Client)
- * 
- * * Yahboom Joystick
- * 
- * ** https://www.yahboom.net/study/SGH
- * 
- * ** https://github.com/lzty634158/GHBit
- * 
- * * DfRobot Driver Expansion Board
- * 
- * ** https://wiki.dfrobot.com/Micro_bit_Driver_Expansion_Board_SKU_DFR0548
- * 
- * ** https://github.com/DFRobot/pxt-motor
- */
+// * Key Notes: Controller-Joystick (Network-Client)
+// 
+// * Yahboom Joystick
+// 
+// ** https://www.yahboom.net/study/SGH
+// 
+// ** https://github.com/lzty634158/GHBit
+// 
+// * DfRobot Driver Expansion Board
+// 
+// ** https://wiki.dfrobot.com/Micro_bit_Driver_Expansion_Board_SKU_DFR0548
+// 
+// ** https://github.com/DFRobot/pxt-motor
 function setup_Network_Fn () {
     if (true) {
         radio.setGroup(network_GroupChannel_MyBotAndController_Base0_Int)
@@ -355,8 +351,10 @@ function setup_ControllerOnly_Fn () {
 input.onButtonPressed(Button.AB, function () {
     deviceType_Bot_Bool = false
     if (!(deviceType_Controller_Bool)) {
+        _codeComment_AsText = "Only place that activates Controller"
         deviceType_Controller_Bool = true
     }
+    roboQuest.rq_Setup_Fn(false, true)
 })
 function Screen_Clear_Fn () {
     for (let index_X = 0; index_X <= 4; index_X++) {
@@ -376,69 +374,29 @@ radio.onReceivedString(function (receivedString) {
             Screen_Clear_Fn()
             if (true) {
                 if (receivedString == "f") {
-                    basic.showLeds(`
-                        . . # . .
-                        . . # . .
-                        # # # # #
-                        . # # # .
-                        . . # . .
-                        `)
-                    _codeComment_AsText = "'f' = Forward"
+                    roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Forward)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Straight Forward' (less drifting Left or Right)"
-                    roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
-                    led.plot(2, 4)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
                 } else if (receivedString == "b") {
-                    basic.showLeds(`
-                        . . # . .
-                        . # # # .
-                        # # # # #
-                        . . # . .
-                        . . # . .
-                        `)
-                    _codeComment_AsText = "'b' = Backward"
+                    roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Backward)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Straight Backward' (less drifting Left or Right)"
-                    roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
-                    led.plot(2, 0)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
                 } else if (receivedString == "l") {
-                    basic.showLeds(`
-                        . . # . .
-                        . . # # .
-                        # # # # #
-                        . . # # .
-                        . . # . .
-                        `)
-                    _codeComment_AsText = "'l' = Left"
+                    roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Left)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Turn Left'"
-                    roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
-                    led.plot(4, 2)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
                 } else if (receivedString == "r") {
-                    basic.showLeds(`
-                        . . # . .
-                        . # # . .
-                        # # # # #
-                        . # # . .
-                        . . # . .
-                        `)
-                    _codeComment_AsText = "'r' = Right"
+                    roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Right)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Turn Right'"
-                    roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
-                    led.plot(0, 2)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
                 } else if (receivedString == "s") {
-                    _codeComment_AsText = "'s' = Stop"
-                    roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_AS_STOP, motor_Power_ZERO_AS_STOP)
-                    basic.showLeds(`
-                        . . . . .
-                        . # # # .
-                        . # # # .
-                        . # # # .
-                        . . . . .
-                        `)
-                    led.plot(2, 2)
+                    roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Stop)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_AS_STOP, motor_Power_ZERO_AS_STOP)
                     _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
                     screen_IconMesssage_Fn("bot")
                 } else {
                     _codeComment_AsText = "Error: Unknown Msg, so just Stop"
-                    roboQuest.powerMotorsViaBlueRedBlackPins(PortGroup_BlueRedBlack__PortIds__Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_AS_STOP, motor_Power_ZERO_AS_STOP)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_AS_STOP, motor_Power_ZERO_AS_STOP)
                     if (true) {
                         _codeComment_AsText = "For now, all 4 corners = Error: Unknown Msg"
                         screen_IconMesssage_Fn("error")
@@ -456,6 +414,7 @@ radio.onReceivedString(function (receivedString) {
         _codeComment_AsText = "Only place that activates Bot"
         _codeComment_AsText = "Bot can only be activated by wake-up message from Controller-Remote"
         deviceType_Bot_Bool = true
+        roboQuest.rq_Setup_Fn(true, false)
         setup_BotOnly_Setup_Fn()
     }
 })
@@ -507,63 +466,20 @@ basic.forever(function () {
     if (deviceType_Controller_Bool) {
         Screen_Clear_Fn()
         if (input.isGesture(Gesture.LogoDown)) {
-            basic.showLeds(`
-                . . # . .
-                . # # # .
-                # # # # #
-                . . # . .
-                . . # . .
-                `)
-            _codeComment_AsText = "Customize Above User-Input Option as Needed"
-            _codeComment_AsText = "'f' = Forward"
+            roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Forward)
             radio.sendString("f")
-            led.plot(2, 0)
         } else if (input.isGesture(Gesture.LogoUp)) {
-            basic.showLeds(`
-                . . # . .
-                . . # . .
-                # # # # #
-                . # # # .
-                . . # . .
-                `)
-            _codeComment_AsText = "Customize Above User-Input Option as Needed"
-            _codeComment_AsText = "'b' = Backward"
+            roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Backward)
             radio.sendString("b")
-            led.plot(2, 4)
         } else if (input.isGesture(Gesture.TiltLeft)) {
-            basic.showLeds(`
-                . . # . .
-                . # # . .
-                # # # # #
-                . # # . .
-                . . # . .
-                `)
-            _codeComment_AsText = "Customize Above User-Input Option as Needed"
-            _codeComment_AsText = "'l' = Left"
+            roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Left)
             radio.sendString("l")
-            led.plot(0, 2)
         } else if (input.isGesture(Gesture.TiltRight)) {
-            basic.showLeds(`
-                . . # . .
-                . . # # .
-                # # # # #
-                . . # # .
-                . . # . .
-                `)
-            _codeComment_AsText = "Customize Above User-Input Option as Needed"
-            _codeComment_AsText = "'r' = Right"
+            roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Right)
             radio.sendString("r")
-            led.plot(4, 2)
         } else {
-            basic.showLeds(`
-                . . . . .
-                . # # # .
-                . # # # .
-                . # # # .
-                . . . . .
-                `)
+            roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Stop)
             radio.sendString("s")
-            led.plot(2, 2)
             _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
             screen_IconMesssage_Fn("controller")
         }
