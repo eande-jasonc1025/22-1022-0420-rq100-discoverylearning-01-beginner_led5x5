@@ -363,12 +363,23 @@ function Screen_Clear_Fn () {
         }
     }
 }
+/**
+ * 2022-1024
+ * 
+ * * Power = 100 very strong
+ * 
+ * * 50, 30, 20, 10 too weak, no motion of wheels even when propped up
+ * 
+ * * 20 one side is very weak for turn, then try 30
+ * 
+ * * 30 seems decent min for discovery learning what is a good max
+ */
 // RQ-BX-G (Global)
 radio.onReceivedString(function (receivedString) {
     _codeComment_AsText = "For Local-Controller-Remote"
     if (deviceType_Bot_Bool) {
         if (true) {
-            if (false) {
+            if (_debug_Serial_Print_Bool) {
                 serial.writeLine("RadioNetwork:>" + receivedString + "<")
             }
             Screen_Clear_Fn()
@@ -385,7 +396,7 @@ radio.onReceivedString(function (receivedString) {
                     }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Forward)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Straight Forward' (less drifting Left or Right)"
-                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 100, 100)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 30, 30)
                 } else if (receivedString == "b") {
                     if (false) {
                         basic.showLeds(`
@@ -398,7 +409,7 @@ radio.onReceivedString(function (receivedString) {
                     }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Backward)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Straight Backward' (less drifting Left or Right)"
-                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, -100, -100)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, -30, -30)
                 } else if (receivedString == "l") {
                     if (false) {
                         basic.showLeds(`
@@ -411,7 +422,7 @@ radio.onReceivedString(function (receivedString) {
                     }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Left)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Turn Left'"
-                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, -100, 100)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 0, 30)
                 } else if (receivedString == "r") {
                     if (false) {
                         basic.showLeds(`
@@ -424,7 +435,7 @@ radio.onReceivedString(function (receivedString) {
                     }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Right)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Turn Right'"
-                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 100, -100)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 30, 0)
                 } else if (receivedString == "s") {
                     if (false) {
                         basic.showLeds(`
@@ -437,8 +448,10 @@ radio.onReceivedString(function (receivedString) {
                     }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Stop)
                     roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_AS_STOP, motor_Power_ZERO_AS_STOP)
-                    _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
-                    screen_IconMesssage_Fn("bot")
+                    if (false) {
+                        _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
+                        screen_IconMesssage_Fn("bot")
+                    }
                 } else {
                     _codeComment_AsText = "Error: Unknown Msg, so just Stop"
                     roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_AS_STOP, motor_Power_ZERO_AS_STOP)
@@ -452,7 +465,17 @@ radio.onReceivedString(function (receivedString) {
                 network_Throttle_MilliSec_Per_CpuCycle_End = control.millis()
                 network_Throttle_MilliSec_Per_CpuCycle_Duration = network_Throttle_MilliSec_Per_CpuCycle_End - network_Throttle_MilliSec_Per_CpuCycle_Start
                 network_Throttle_MilliSec_Per_CpuCycle_Start = network_Throttle_MilliSec_Per_CpuCycle_End
-                serial.writeLine("\"*** *** Debug: network_Throttle_MilliSec_Per_CpuCycle_Duration: \"" + network_Throttle_MilliSec_Per_CpuCycle_Duration)
+                roboQuest.rq_PrintString_Oled_Serial_Fn(
+                "msec:" + convertToText(network_Throttle_MilliSec_Per_CpuCycle_Duration) + " ",
+                0,
+                2,
+                1,
+                false,
+                false
+                )
+                if (_debug_Serial_Print_Bool) {
+                    serial.writeLine("\"*** *** Debug: network_Throttle_MilliSec_Per_CpuCycle_Duration: \"" + network_Throttle_MilliSec_Per_CpuCycle_Duration)
+                }
             }
         }
     } else if (!(deviceType_Controller_Bool) && !(deviceType_Bot_Bool)) {
@@ -461,6 +484,13 @@ radio.onReceivedString(function (receivedString) {
         deviceType_Bot_Bool = true
         roboQuest.rq_Setup_Fn(true, false)
         setup_BotOnly_Setup_Fn()
+    }
+})
+input.onGesture(Gesture.Shake, function () {
+    if (_debug_Serial_Print_Bool) {
+        _debug_Serial_Print_Bool = false
+    } else {
+        _debug_Serial_Print_Bool = true
     }
 })
 let network_Throttle_MilliSec_Per_CpuCycle_Start = 0
@@ -510,7 +540,7 @@ basic.forever(function () {
 basic.forever(function () {
     if (deviceType_Controller_Bool) {
         Screen_Clear_Fn()
-        if (input.isGesture(Gesture.LogoDown)) {
+        if (input.buttonIsPressed(Button.AB) || input.isGesture(Gesture.LogoDown)) {
             if (false) {
                 basic.showLeds(`
                     . . # . .
@@ -534,7 +564,7 @@ basic.forever(function () {
             }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Backward)
             radio.sendString("b")
-        } else if (input.isGesture(Gesture.TiltLeft)) {
+        } else if (input.buttonIsPressed(Button.A) || input.isGesture(Gesture.TiltLeft)) {
             if (false) {
                 basic.showLeds(`
                     . . # . .
@@ -546,7 +576,7 @@ basic.forever(function () {
             }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Left)
             radio.sendString("l")
-        } else if (input.isGesture(Gesture.TiltRight)) {
+        } else if (input.buttonIsPressed(Button.B) || input.isGesture(Gesture.TiltRight)) {
             if (false) {
                 basic.showLeds(`
                     . . # . .
@@ -570,8 +600,10 @@ basic.forever(function () {
             }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Stop)
             radio.sendString("s")
-            _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
-            screen_IconMesssage_Fn("controller")
+            if (false) {
+                _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
+                screen_IconMesssage_Fn("controller")
+            }
         }
         if (_debug_Serial_Print_Bool) {
             network_Throttle_MilliSec_Per_CpuCycle_End = control.millis()
