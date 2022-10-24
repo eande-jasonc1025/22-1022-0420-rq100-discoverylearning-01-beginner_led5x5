@@ -1,6 +1,6 @@
 {
     "name": "22-1022-0420-Rq100-DiscoveryLearning-01-Beginner_Led5x5_FwdBwdLftRhtStp",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "",
     "dependencies": {
         "core": "*",
