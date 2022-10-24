@@ -374,22 +374,67 @@ radio.onReceivedString(function (receivedString) {
             Screen_Clear_Fn()
             if (true) {
                 if (receivedString == "f") {
+                    if (false) {
+                        basic.showLeds(`
+                            . . # . .
+                            . # # # .
+                            # # # # #
+                            . . # . .
+                            . . # . .
+                            `)
+                    }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Forward)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Straight Forward' (less drifting Left or Right)"
-                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 100, 100)
                 } else if (receivedString == "b") {
+                    if (false) {
+                        basic.showLeds(`
+                            . . # . .
+                            . . # . .
+                            # # # # #
+                            . # # # .
+                            . . # . .
+                            `)
+                    }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Backward)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Straight Backward' (less drifting Left or Right)"
-                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, -100, -100)
                 } else if (receivedString == "l") {
+                    if (false) {
+                        basic.showLeds(`
+                            . . # . .
+                            . # # . .
+                            # # # # #
+                            . # # . .
+                            . . # . .
+                            `)
+                    }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Left)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Turn Left'"
-                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, -100, 100)
                 } else if (receivedString == "r") {
+                    if (false) {
+                        basic.showLeds(`
+                            . . # . .
+                            . . # # .
+                            # # # # #
+                            . . # # .
+                            . . # . .
+                            `)
+                    }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Right)
                     _codeComment_AsText = "Customize Code_Below with Motor_Power Values for an Effective 'Turn Right'"
-                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 0, 0)
+                    roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, 100, -100)
                 } else if (receivedString == "s") {
+                    if (false) {
+                        basic.showLeds(`
+                            . . . . .
+                            . . . . .
+                            . . # . .
+                            . . . . .
+                            . . . . .
+                            `)
+                    }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Stop)
                     roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_AS_STOP, motor_Power_ZERO_AS_STOP)
                     _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
@@ -466,18 +511,63 @@ basic.forever(function () {
     if (deviceType_Controller_Bool) {
         Screen_Clear_Fn()
         if (input.isGesture(Gesture.LogoDown)) {
+            if (false) {
+                basic.showLeds(`
+                    . . # . .
+                    . # # # .
+                    # # # # #
+                    . . # . .
+                    . . # . .
+                    `)
+            }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Forward)
             radio.sendString("f")
         } else if (input.isGesture(Gesture.LogoUp)) {
+            if (false) {
+                basic.showLeds(`
+                    . . # . .
+                    . . # . .
+                    # # # # #
+                    . # # # .
+                    . . # . .
+                    `)
+            }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Backward)
             radio.sendString("b")
         } else if (input.isGesture(Gesture.TiltLeft)) {
+            if (false) {
+                basic.showLeds(`
+                    . . # . .
+                    . # # . .
+                    # # # # #
+                    . # # . .
+                    . . # . .
+                    `)
+            }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Left)
             radio.sendString("l")
         } else if (input.isGesture(Gesture.TiltRight)) {
+            if (false) {
+                basic.showLeds(`
+                    . . # . .
+                    . . # # .
+                    # # # # #
+                    . . # # .
+                    . . # . .
+                    `)
+            }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Right)
             radio.sendString("r")
         } else {
+            if (false) {
+                basic.showLeds(`
+                    . . . . .
+                    . . . . .
+                    . . # . .
+                    . . . . .
+                    . . . . .
+                    `)
+            }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Stop)
             radio.sendString("s")
             _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
