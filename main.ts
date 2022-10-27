@@ -341,6 +341,9 @@ function setup_BotAndController_Fn () {
 function setup_BotOnly_Setup_Fn () {
     if (deviceType_Bot_Bool) {
         motor_Power_ZERO_AS_STOP = 0
+        servo_Degrees_MIN_INT = 0
+        servo_Degrees_MAX_INT = 180
+        servo_Degrees_Int = servo_Degrees_MAX_INT
     }
 }
 function setup_ControllerOnly_Fn () {
@@ -448,9 +451,55 @@ radio.onReceivedString(function (receivedString) {
                     }
                     roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Stop)
                     roboQuest.rq_PowerMotorsViaBlueRedBlackPins_Fn(rq_PortGroup_BlueRedBlack_PortIds_Enum.S1_MotorLeft__S0_MotorRight, motor_Power_ZERO_AS_STOP, motor_Power_ZERO_AS_STOP)
-                    if (false) {
+                    if (true) {
                         _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
                         screen_IconMesssage_Fn("bot")
+                    }
+                } else if (receivedString == "d") {
+                    if (true) {
+                        basic.showLeds(`
+                            # # . . .
+                            . # # # .
+                            . . . # #
+                            . . . . .
+                            . . . . .
+                            `)
+                    }
+                    servo_Degrees_Int = Math.constrain(servo_Degrees_Int + -5, servo_Degrees_MIN_INT, servo_Degrees_MAX_INT)
+                    wuKong.setServoAngle(wuKong.ServoTypeList._180, wuKong.ServoList.S7, servo_Degrees_Int)
+                    roboQuest.rq_PrintString_Oled_Serial_Fn(
+                    "down",
+                    0,
+                    3,
+                    1,
+                    false,
+                    false
+                    )
+                    if (true) {
+                        serial.writeLine(convertToText(servo_Degrees_Int))
+                    }
+                } else if (receivedString == "u") {
+                    if (true) {
+                        basic.showLeds(`
+                            . . . . .
+                            . . . . .
+                            . . . # #
+                            . # # # .
+                            # # . . .
+                            `)
+                    }
+                    servo_Degrees_Int = Math.constrain(servo_Degrees_Int + 5, servo_Degrees_MIN_INT, servo_Degrees_MAX_INT)
+                    wuKong.setServoAngle(wuKong.ServoTypeList._180, wuKong.ServoList.S7, servo_Degrees_Int)
+                    roboQuest.rq_PrintString_Oled_Serial_Fn(
+                    "up..",
+                    0,
+                    3,
+                    1,
+                    false,
+                    false
+                    )
+                    if (true) {
+                        serial.writeLine(convertToText(servo_Degrees_Int))
                     }
                 } else {
                     _codeComment_AsText = "Error: Unknown Msg, so just Stop"
@@ -496,6 +545,9 @@ input.onGesture(Gesture.Shake, function () {
 let network_Throttle_MilliSec_Per_CpuCycle_Start = 0
 let network_Throttle_MilliSec_Per_CpuCycle_Duration = 0
 let network_Throttle_MilliSec_Per_CpuCycle_End = 0
+let servo_Degrees_Int = 0
+let servo_Degrees_MAX_INT = 0
+let servo_Degrees_MIN_INT = 0
 let motor_Power_ZERO_AS_STOP = 0
 let _debug_Serial_Print_Bool = false
 let deviceType_Bot_Bool = false
@@ -540,7 +592,7 @@ basic.forever(function () {
 basic.forever(function () {
     if (deviceType_Controller_Bool) {
         Screen_Clear_Fn()
-        if (input.buttonIsPressed(Button.AB) || input.isGesture(Gesture.LogoDown)) {
+        if (input.isGesture(Gesture.LogoDown) || false) {
             if (false) {
                 basic.showLeds(`
                     . . # . .
@@ -564,7 +616,7 @@ basic.forever(function () {
             }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Backward)
             radio.sendString("b")
-        } else if (input.buttonIsPressed(Button.A) || input.isGesture(Gesture.TiltLeft)) {
+        } else if (input.isGesture(Gesture.TiltLeft)) {
             if (false) {
                 basic.showLeds(`
                     . . # . .
@@ -576,7 +628,7 @@ basic.forever(function () {
             }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Left)
             radio.sendString("l")
-        } else if (input.buttonIsPressed(Button.B) || input.isGesture(Gesture.TiltRight)) {
+        } else if (input.isGesture(Gesture.TiltRight)) {
             if (false) {
                 basic.showLeds(`
                     . . # . .
@@ -588,6 +640,28 @@ basic.forever(function () {
             }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Right)
             radio.sendString("r")
+        } else if (input.buttonIsPressed(Button.A)) {
+            if (true) {
+                basic.showLeds(`
+                    # # . . .
+                    . # # # .
+                    . . . # #
+                    . . . . .
+                    . . . . .
+                    `)
+            }
+            radio.sendString("d")
+        } else if (input.buttonIsPressed(Button.B)) {
+            if (true) {
+                basic.showLeds(`
+                    . . . . .
+                    . . . . .
+                    . . . # #
+                    . # # # .
+                    # # . . .
+                    `)
+            }
+            radio.sendString("u")
         } else {
             if (false) {
                 basic.showLeds(`
@@ -600,7 +674,7 @@ basic.forever(function () {
             }
             roboQuest.rq_show_MotionDirection_Fn(rq_Motion_Direction_Enum.Stop)
             radio.sendString("s")
-            if (false) {
+            if (true) {
                 _codeComment_AsText = "During idle, show entity-type: B=Bot, C=Controller"
                 screen_IconMesssage_Fn("controller")
             }
